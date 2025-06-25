@@ -1,0 +1,40 @@
+package com.dietergandalf.store_manager.model;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+public class CreditCardPayment implements PaymentMethod {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long credit_card_id;
+	private String card_number;
+	private String expiry_date;
+	private Customer card_holder;
+
+	@Override
+	public String getType() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean initiatePayment() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean verifyPayment() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+}
