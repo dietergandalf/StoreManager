@@ -1,0 +1,14 @@
+target/
+.mvn/wrapper/maven-wrapper.jar
+.git
+.gitignore
+README.md
+.env
+.dockerignore
+Dockerfile
+.classpath
+.factorypath
+.project
+.settings/
+*.iml
+.idea/

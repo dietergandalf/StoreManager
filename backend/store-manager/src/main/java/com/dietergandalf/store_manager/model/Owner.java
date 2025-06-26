@@ -3,15 +3,20 @@ package com.dietergandalf.store_manager.model;
 import java.util.List;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 public class Owner extends Person {
+    @OneToMany(mappedBy = "stand_owner")
     List<Stand> stands;
 
 	public List<Stand> getAvailableStands() {

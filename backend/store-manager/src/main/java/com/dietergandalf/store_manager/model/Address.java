@@ -1,11 +1,6 @@
 package com.dietergandalf.store_manager.model;
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
+import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,28 +10,21 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity
-@Table(name = "ADDRESS")
+@Embeddable
 public class Address {
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "address_seq")
-	@SequenceGenerator(name = "address_seq", sequenceName = "address_seq", allocationSize = 1)
-	@Column(name = "ADDRESS_ID")
-	private Long addressId;
-
-	@Column(name = "STREET", nullable = false)
+	@Column(name = "STREET")
 	private String street;
 
-	@Column(name = "POSTAL_CODE", nullable = false)
+	@Column(name = "POSTAL_CODE")
 	private String postalCode;
 
-	@Column(name = "CITY", nullable = false)
+	@Column(name = "CITY")
 	private String city;
 
-	@Column(name = "PROVINCE", nullable = false)
+	@Column(name = "PROVINCE")
 	private String province;
 
-	@Column(name = "COUNTRY", nullable = false)
+	@Column(name = "COUNTRY")
 	private String country;
 
 	
