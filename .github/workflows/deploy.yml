@@ -1,0 +1,56 @@
+name: Deploy to Server
+
+on:
+  workflow_run:
+    workflows: ["CI/CD Pipeline"]
+    types:
+      - completed
+    branches:
+      - main
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME_BACKEND: ${{ github.repository }}/backend
+  IMAGE_NAME_FRONTEND: ${{ github.repository }}/frontend
+
+jobs:
+  deploy:
+    name: Deploy to Production Server
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Deploy via SSH
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.SSH_KEY }}
+        port: ${{ secrets.PORT }}
+        script: |
+          # Navigate to application directory
+          cd /opt/store-manager
+          
+          # Pull latest changes
+          git pull origin main
+          
+          # Login to container registry
+          echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+          
+          # Pull latest images
+          docker-compose -f compose.prod.yml pull
+          
+          # Recreate containers with new images
+          docker-compose -f compose.prod.yml up -d --force-recreate
+          
+          # Clean up old images
+          docker image prune -f
+          
+          # Health check
+          sleep 30
+          curl -f http://localhost/health || exit 1
+          
+          echo "Deployment completed successfully!"
