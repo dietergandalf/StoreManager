@@ -17,6 +17,11 @@ jobs:
     name: Backend Tests
     runs-on: ubuntu-latest
     
+    permissions:
+      contents: read
+      checks: write
+      pull-requests: write
+    
     services:
       postgres:
         image: postgres:15
@@ -59,6 +64,8 @@ jobs:
         name: Maven Tests
         path: backend/store-manager/target/surefire-reports/*.xml
         reporter: java-junit
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
     - name: Build backend JAR
       working-directory: ./backend/store-manager
