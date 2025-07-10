@@ -14,7 +14,7 @@ function App() {
       try {
         // Try to connect to actuator health endpoint (if available)
         // or just check if the server is responding
-        const response = await axios.get(`${API_BASE_URL}/actuator/health`, {
+        await axios.get(`${API_BASE_URL}/actuator/health`, {
           timeout: 5000
         }).catch(() => {
           // If actuator is not available, try a simple request
