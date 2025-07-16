@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { sellerApi } from '../api';
 
 function SellerProfile({ sellerId }) {
@@ -8,13 +8,7 @@ function SellerProfile({ sellerId }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editForm, setEditForm] = useState({});
 
-  useEffect(() => {
-    if (sellerId) {
-      fetchSeller();
-    }
-  }, [sellerId]);
-
-  const fetchSeller = async () => {
+  const fetchSeller = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -27,7 +21,13 @@ function SellerProfile({ sellerId }) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [sellerId]);
+
+  useEffect(() => {
+    if (sellerId) {
+      fetchSeller();
+    }
+  }, [sellerId, fetchSeller]);
 
   const handleEdit = () => {
     setIsEditing(true);

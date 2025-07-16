@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { ownerApi } from '../api';
 
 function OwnerProfile({ ownerId }) {
@@ -8,13 +8,7 @@ function OwnerProfile({ ownerId }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editForm, setEditForm] = useState({});
 
-  useEffect(() => {
-    if (ownerId) {
-      fetchOwner();
-    }
-  }, [ownerId]);
-
-  const fetchOwner = async () => {
+  const fetchOwner = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -27,7 +21,13 @@ function OwnerProfile({ ownerId }) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [ownerId]);
+
+  useEffect(() => {
+    if (ownerId) {
+      fetchOwner();
+    }
+  }, [ownerId, fetchOwner]);
 
   const handleEdit = () => {
     setIsEditing(true);

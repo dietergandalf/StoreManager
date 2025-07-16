@@ -154,7 +154,7 @@ export const systemApi = {
       return response.data;
     } catch (error) {
       // Fallback to base endpoint
-      const response = await apiClient.get('/');
+      await apiClient.get('/');
       return { status: 'UP' };
     }
   },
