@@ -1,39 +1,42 @@
 package com.dietergandalf.store_manager.integration;
 
+import com.dietergandalf.store_manager.config.TestConfig;
 import com.dietergandalf.store_manager.dto.RegisterRequestDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureWebMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest
-@AutoConfigureWebMvc
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureMockMvc
 @ActiveProfiles("test")
 @Transactional
+@Import(TestConfig.class)
 public class CustomerIntegrationTest {
 
     @Autowired
-    private WebApplicationContext webApplicationContext;
+    private MockMvc mockMvc;
 
     @Autowired
     private ObjectMapper objectMapper;
 
-    private MockMvc mockMvc;
+    @BeforeEach
+    void setUp() {
+        // MockMvc is now auto-configured, no manual setup needed
+    }
 
     @Test
     void createCustomer_ShouldReturnCreatedCustomer() throws Exception {
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-
         // Given
         RegisterRequestDto registerRequest = RegisterRequestDto.builder()
                 .firstName("John")
@@ -57,8 +60,6 @@ public class CustomerIntegrationTest {
 
     @Test
     void getAllCustomers_ShouldReturnCustomersList() throws Exception {
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-
         // When & Then
         mockMvc.perform(get("/api/customers"))
                 .andExpect(status().isOk())
@@ -68,8 +69,6 @@ public class CustomerIntegrationTest {
 
     @Test
     void getAllAvailableProducts_ShouldReturnProductsList() throws Exception {
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-
         // When & Then
         mockMvc.perform(get("/api/customers/products"))
                 .andExpect(status().isOk())
