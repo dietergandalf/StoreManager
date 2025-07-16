@@ -51,9 +51,11 @@ services:
         environment:
             - REACT_APP_API_BASE_URL=http://localhost:9080
             - CHOKIDAR_USEPOLLING=true  # For hot reload in Docker
+            - WATCHPACK_POLLING=true    # Additional polling for webpack
         volumes:
             - ./frontend/src:/app/src
             - ./frontend/public:/app/public
+            - ./frontend/package.json:/app/package.json
             - /app/node_modules  # Prevent node_modules from being overwritten
         networks:
             - app-network

@@ -1,0 +1,29 @@
+/* ErrorBoundary component styles */
+.error-boundary {
+  padding: 20px;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 8px;
+  margin: 20px 0;
+  text-align: center;
+}
+
+.error-boundary h2 {
+  color: #721c24;
+  margin: 0 0 10px 0;
+}
+
+.error-boundary p {
+  color: #721c24;
+  margin: 10px 0;
+}
+
+.error-boundary pre {
+  background-color: #f1f1f1;
+  padding: 10px;
+  border-radius: 4px;
+  text-align: left;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}

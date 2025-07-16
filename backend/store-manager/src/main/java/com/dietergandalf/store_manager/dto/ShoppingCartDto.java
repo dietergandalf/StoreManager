@@ -15,7 +15,7 @@ public class ShoppingCartDto {
     private Long cartId;
     private Long customerId;
     private String customerName;
-    private List<ProductStockDto> products;
+    private List<CartItemDto> cartItems;
     private Double totalAmount;
     private Integer totalItems;
 }

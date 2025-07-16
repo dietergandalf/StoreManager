@@ -16,5 +16,9 @@ COPY . .
 # Expose port
 EXPOSE 3000
 
-# Start the application
+# Set environment variable for hot reloading
+ENV CHOKIDAR_USEPOLLING=true
+ENV WATCHPACK_POLLING=true
+
+# Start the application in development mode with hot reloading
 CMD ["npm", "start"]

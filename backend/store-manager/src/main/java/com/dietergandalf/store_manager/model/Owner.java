@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 public class Owner extends Person {
+    
     @OneToMany(mappedBy = "stand_owner")
     List<Stand> stands;
 
@@ -31,7 +32,8 @@ public class Owner extends Person {
 
     public boolean hasAvailableStand(){
         //TODO: Logic to check if the owner has any available stands
-        return getAvailableStands().size() > 0;
+        List<Stand> availableStands = getAvailableStands();
+        return availableStands != null && availableStands.size() > 0;
     }
 
     @Override
