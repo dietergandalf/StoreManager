@@ -6,6 +6,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityFilterAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.oauth2.client.servlet.OAuth2ClientWebSecurityAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.saml2.Saml2RelyingPartyAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.servlet.OAuth2ResourceServerAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
@@ -22,6 +30,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @Transactional
 @Import(TestConfig.class)
+@EnableAutoConfiguration(exclude = {
+    SecurityAutoConfiguration.class,
+    UserDetailsServiceAutoConfiguration.class,
+    SecurityFilterAutoConfiguration.class,
+    OAuth2ClientWebSecurityAutoConfiguration.class,
+    Saml2RelyingPartyAutoConfiguration.class,
+    OAuth2ResourceServerAutoConfiguration.class,
+    OAuth2ClientAutoConfiguration.class
+})
 public class CustomerIntegrationTest {
 
     @Autowired
