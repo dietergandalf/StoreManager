@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { authApi, customerApi, sellerApi, ownerApi } from '../api';
 import CustomerProfile from './CustomerProfile';
 import SellerProfile from './SellerProfile';
@@ -14,11 +14,7 @@ const UserDashboard = ({ user, onLogout }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    loadUserDetails();
-  }, [user]);
-
-  const loadUserDetails = async () => {
+  const loadUserDetails = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -58,6 +54,8 @@ const UserDashboard = ({ user, onLogout }) => {
           case 'owner':
             allUsers = await ownerApi.getAllOwners();
             break;
+          default:
+            throw new Error('Unknown user type');
         }
         
         // Find user by ID or email
@@ -82,7 +80,11 @@ const UserDashboard = ({ user, onLogout }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user]);
+
+  useEffect(() => {
+    loadUserDetails();
+  }, [loadUserDetails]);
 
   const handleLogout = async () => {
     try {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { customerApi, productApi } from '../api/storeApi';
 import Checkout from './Checkout';
 import '../styles/ShoppingCart.css';
@@ -11,12 +11,7 @@ const ShoppingCart = ({ customerId }) => {
   const [showAddProducts, setShowAddProducts] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
 
-  useEffect(() => {
-    loadCart();
-    loadProducts();
-  }, [customerId]);
-
-  const loadCart = async () => {
+  const loadCart = useCallback(async () => {
     try {
       setLoading(true);
       const cartData = await customerApi.getCart(customerId);
@@ -33,16 +28,21 @@ const ShoppingCart = ({ customerId }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [customerId]);
 
-  const loadProducts = async () => {
+  const loadProducts = useCallback(async () => {
     try {
       const productsData = await productApi.getAllProducts();
       setProducts(productsData);
     } catch (err) {
       console.error('Failed to load products:', err);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    loadCart();
+    loadProducts();
+  }, [loadCart, loadProducts]);
 
   const addToCart = async (productStockId, quantity = 1) => {
     try {

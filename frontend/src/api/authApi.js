@@ -27,7 +27,7 @@ export const authApi = {
 
   // Login user by checking existence and returning user data
   login: async (loginData) => {
-    const { email, password } = loginData;
+    const { email } = loginData;
     
     // Since we don't have proper authentication yet, we'll check each endpoint
     // In a real application, this would be a single login endpoint

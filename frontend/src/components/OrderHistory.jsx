@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { customerApi } from '../api/storeApi';
 import '../styles/OrderHistory.css';
 
@@ -7,11 +7,7 @@ const OrderHistory = ({ customerId }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  useEffect(() => {
-    loadOrders();
-  }, [customerId]);
-
-  const loadOrders = async () => {
+  const loadOrders = useCallback(async () => {
     try {
       setLoading(true);
       const ordersData = await customerApi.getOrders(customerId);
@@ -22,7 +18,11 @@ const OrderHistory = ({ customerId }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [customerId]);
+
+  useEffect(() => {
+    loadOrders();
+  }, [loadOrders]);
 
   const getStatusColor = (status) => {
     switch (status) {

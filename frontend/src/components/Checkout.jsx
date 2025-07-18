@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { customerApi } from '../api/storeApi';
 import OrderConfirmation from './OrderConfirmation';
 import '../styles/Checkout.css';
@@ -16,11 +16,7 @@ const Checkout = ({ customerId, onOrderSuccess, onCancel }) => {
     orderNotes: ''
   });
 
-  useEffect(() => {
-    loadCart();
-  }, [customerId]);
-
-  const loadCart = async () => {
+  const loadCart = useCallback(async () => {
     try {
       setLoading(true);
       const cartData = await customerApi.getCart(customerId);
@@ -31,7 +27,11 @@ const Checkout = ({ customerId, onOrderSuccess, onCancel }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [customerId]);
+
+  useEffect(() => {
+    loadCart();
+  }, [loadCart]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
