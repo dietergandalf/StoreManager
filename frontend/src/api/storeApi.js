@@ -58,6 +58,57 @@ export const customerApi = {
     const response = await apiClient.get(`/api/customers/${customerId}/cart`);
     return response.data;
   },
+
+  // Clear customer's cart
+  clearCart: async (customerId) => {
+    const response = await apiClient.delete(`/api/customers/${customerId}/cart`);
+    return response.data;
+  },
+
+  // Remove item from cart
+  removeFromCart: async (customerId, cartItemId) => {
+    const response = await apiClient.delete(`/api/customers/${customerId}/cart/items/${cartItemId}`);
+    return response.data;
+  },
+
+  // Update cart item quantity
+  updateCartItemQuantity: async (customerId, cartItemId, quantity) => {
+    const response = await apiClient.put(`/api/customers/${customerId}/cart/items/${cartItemId}?quantity=${quantity}`);
+    return response.data;
+  },
+
+  // Checkout and create order
+  checkout: async (customerId, checkoutData) => {
+    const response = await apiClient.post(`/api/customers/${customerId}/checkout`, checkoutData);
+    return response.data;
+  },
+
+  // Get customer orders
+  getOrders: async (customerId) => {
+    const response = await apiClient.get(`/api/customers/${customerId}/orders`);
+    return response.data;
+  },
+};
+
+// Order API calls
+export const orderApi = {
+  // Get order by ID
+  getOrderById: async (orderId) => {
+    const response = await apiClient.get(`/api/orders/${orderId}`);
+    return response.data;
+  },
+
+  // Update order status
+  updateOrderStatus: async (orderId, status) => {
+    const response = await apiClient.put(`/api/orders/${orderId}/status?status=${status}`);
+    return response.data;
+  },
+
+  // Get all orders (admin functionality)
+  getAllOrders: async () => {
+    const response = await apiClient.get('/api/orders');
+    return response.data;
+  },
 };
 
 // Seller API calls
