@@ -1,5 +1,8 @@
 import { render, screen } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
 import React from 'react';
+import ErrorBoundary from './components/ErrorBoundary';
+import Products from './components/Products';
 
 // Mock the API modules to avoid import issues during testing
 jest.mock('./api', () => ({
@@ -7,18 +10,42 @@ jest.mock('./api', () => ({
   customerApi: {},
   sellerApi: {},
   ownerApi: {},
-  productApi: {}
+  productApi: {
+    getProducts: jest.fn(() => Promise.resolve({ data: [] }))
+  }
 }));
 
-// Simple component for testing
-const TestComponent = () => <div>Store Manager Test</div>;
+// Wrapper component for router-dependent components
+const TestWrapper = ({ children }) => (
+  <BrowserRouter>
+    {children}
+  </BrowserRouter>
+);
 
-test('renders test component', () => {
-  render(<TestComponent />);
-  const element = screen.getByText(/store manager test/i);
-  expect(element).toBeInTheDocument();
+test('ErrorBoundary renders children when there is no error', () => {
+  const TestChild = () => <div>Test Child Component</div>;
+  
+  render(
+    <ErrorBoundary>
+      <TestChild />
+    </ErrorBoundary>
+  );
+  
+  expect(screen.getByText('Test Child Component')).toBeInTheDocument();
 });
 
-test('react is working', () => {
+test('Products component renders without crashing', () => {
+  render(
+    <TestWrapper>
+      <Products />
+    </TestWrapper>
+  );
+  
+  // Products component should render with card class
+  expect(screen.getByText('🛍️ Available Products')).toBeInTheDocument();
+});
+
+test('React is properly configured', () => {
   expect(React).toBeDefined();
+  expect(React.version).toBeDefined();
 });

@@ -1,3 +1,6 @@
+// Import Jest DOM matchers
+import '@testing-library/jest-dom';
+
 // Mock axios globally for all tests
 jest.mock('axios', () => ({
   default: {
