@@ -52,8 +52,7 @@
     ],
     "moduleNameMapper": {
       "^axios$": "axios/dist/node/axios.cjs"
-    },
-    "setupFilesAfterEnv": ["<rootDir>/src/setupTests.js"]
+    }
   },
   "proxy": "http://backend:8080"
 }
